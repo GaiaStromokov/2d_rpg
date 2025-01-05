@@ -36,29 +36,22 @@ def create_chs():
                         add_button(label='Bod', enabled=False, width=40)
                         add_button(label="", enabled=False, width=40, tag="Bod_cs")
                     with child_window(height=58, width=55, border=True):
-                        add_button(label='Mnd', enabled=False, width=40)
-                        add_button(label="", enabled=False, width=40, tag="Mnd_cs")
-                with group (horizontal=True):
-                    with child_window(height=58, width=55, border=True):
                         add_button(label='Str', enabled=False, width=40)
                         add_button(label="", enabled=False, width=40, tag="Str_cs")
-                    with child_window(height=58, width=55, border=True):
-                        add_button(label='Hrt', enabled=False, width=40)
-                        add_button(label="", enabled=False, width=40, tag="Hrt_cs")
                 with group (horizontal=True):
-                    with child_window(height=58, width=55, border=True):
-                        add_button(label='Dex', enabled=False, width=40)
-                        add_button(label="", enabled=False, width=40, tag="Dex_cs")
                     with child_window(height=58, width=55, border=True):
                         add_button(label='Agi', enabled=False, width=40)
                         add_button(label="", enabled=False, width=40, tag="Agi_cs")
+                    with child_window(height=58, width=55, border=True):
+                        add_button(label='Dex', enabled=False, width=40)
+                        add_button(label="", enabled=False, width=40, tag="Dex_cs")
                 with group (horizontal=True):
+                    with child_window(height=58, width=55, border=True):
+                        add_button(label='Mnd', enabled=False, width=40)
+                        add_button(label="", enabled=False, width=40, tag="Mnd_cs")
                     with child_window(height=58, width=55, border=True):
                         add_button(label='Int', enabled=False, width=40)
                         add_button(label="", enabled=False, width=40, tag="Int_cs")
-                    with child_window(height=58, width=55, border=True):
-                            add_button(label='Spc', enabled=False, width=40)
-                            add_button(label="", enabled=False, width=40, tag="Spc_cs")
                 with group (horizontal=True):
                     with child_window(height=58, width=55, border=True):
                         add_button(label='Poi', enabled=False, width=40)
