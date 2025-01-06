@@ -1,5 +1,5 @@
 from dearpygui.dearpygui import *
-import os as os
+import os
 import random as random
 from box import Box
 import numpy as np

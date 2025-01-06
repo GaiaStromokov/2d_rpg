@@ -117,7 +117,8 @@ class Player:
     
     
     def init_stats(self):
-        for stat in self.stat: self.stat[stat].m = m_dict[self.Name].Stats[stat] * n_dict[self.Nature][stat]
+        for stat in self.stat: 
+            self.stat[stat].m = bg_dict[self.bg].Stats[stat]
     def sm_calc(self):
         self.stat.Str.m = self.stat.Str.m + self.stat.Bod.m * .33
         self.stat.Dex.m = self.stat.Dex.m + self.stat.Agi.m * .33
@@ -154,8 +155,9 @@ class Player:
         configure_item(f"L_cs", label=self.L)
         configure_item(f"xp_cs", label=self.xp)
         configure_item(f"Luc_cs", label=self.luc)
-        stats = ["Bod", "Agi", "Mnd", "Vig", "Str", "Dex", "Int", "For", "Poi", "Dod", "Wer"]
-        for stat in stats: configure_item(f"{stat}_cs", label=self.stat[stat].v)
+        stats = ["Bod", "Agi", "Mnd", "Str", "Dex", "Int", "Poi", "Dod", "Wer"]
+        for stat in stats: 
+            configure_item(f"{stat}_cs", label=self.stat[stat].v)
 
 
 

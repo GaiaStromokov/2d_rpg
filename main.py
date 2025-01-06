@@ -12,7 +12,7 @@ class Game:
         self.init_map()
         self.init_keys()
     def init_player(self):
-        self.p=Player(pos=(7, 7), busy=False, level=1, exp=0, Bod=10, Mn1d=10, Luc=10, Str=10, Dex=10, Int=10, Hrt=10, Agi=10, Spc=10, Poi=10, Dod=10, Wer=10, Mom=10)
+        self.p=Player("Prisoner")
         self.p.update_cs()
     def init_ui(self):
         create_map()
@@ -36,15 +36,10 @@ with font_registry(): font_choice = add_font("config/Helvetica.ttf", 13)
 configure_app(init_file="config/config_save.ini", docking=True, docking_space=True)
 create_viewport(title="rpg", width=1400, height=800)
 bind_font(font_choice)
-
+setup_dearpygui()
 g=Game()
 
 
-
-
-
-#^ Initialize and start
-setup_dearpygui()
 show_viewport()
 start_dearpygui()
 destroy_context()

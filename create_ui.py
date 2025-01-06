@@ -19,7 +19,6 @@ def create_debug_menu():
                 add_text("", tag='Tile_bug')
 
 
-# "L", "xp", "Bod", "Agi", "Mnd", "Vig", "Str", "Dex", "Int", "For", "Poi", "Dod", "Wer", "Gur", "Wit", "Cri", "Ler", "Luc"]
 def create_chs():
     with window(no_title_bar=True, pos=(0, 0), no_close=True, show=True,tag="CS_window"):
         with group (horizontal=True):

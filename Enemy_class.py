@@ -1,10 +1,5 @@
 from config.gen_import import *
-
-os.system("cls" if os.name == "nt" else "clear")
-
-
-def roll(sides):
-    return random.randint(1, sides)
+def roll(sides):return random.randint(1, sides)
 
 
 n_dict = Box(
@@ -184,8 +179,3 @@ class Enemy:
             f"Nature: {self.Nature}\n"
             f"Stats:\n{stats_str}\n"
         )
-
-
-# Test it
-monster = Enemy("Goblin", 12)
-print(monster)
