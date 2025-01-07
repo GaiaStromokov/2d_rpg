@@ -16,7 +16,7 @@ re_d = Box({
         }
     },
     "Sand": {
-        "pc": 25,
+        "pc": 0,
         "enc": {
             "Worm": 75,
             "Lizard": 25

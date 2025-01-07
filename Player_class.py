@@ -1,50 +1,8 @@
 from config.gen_import import *
+from Inventory_class import Inventory
+stl = ["Bod","Agi","Mnd","Vig","Str","Dex","Int","For","Poi","Dod","Wer","Gur","Wit","Cri", "Ler"]
 
 
-class Bag:
-    def __init__(self):
-        self.d = Box({
-            "Weapons": {
-                
-            },
-            "Armor": {
-                
-            },
-        })
-class WSL:
-    def __init__(self):
-        self.Name = None
-        self.Weight = None
-        self.Hands = None
-        self.Type = None
-        self.Length = None
-        self.die = None
-        self.scale = None
-
-class ASL:
-    def __init__(self):
-        self.Name = None
-        self.Weight = None
-        self.Type = None
-
-class Inventory:
-    def __init__(self):
-        self.Hand1 = WSL()
-        self.Hand2 = WSL()
-        self.Helm = ASL()
-        self.Chest = ASL()
-        self.Legs = ASL()
-        self.Boots = ASL()
-        self.Gloves = ASL()
-        self.Bag = Bag()
-        self.init_ui()
-    def init_ui(self):
-        delete_item("Inventory", children_only=True)
-        with group(parent="Inventory"):
-            for key in self.Bag.d.keys():
-                with tree_node(label=key):
-                    pass
-            
 #------------------------------------------------------------------
 
 
@@ -74,12 +32,18 @@ bg_dict = Box({
             "Wit": 10,
             "Cri": 10,
             "Ler": 10,
-            "Luc": 0
+        },
+        "Luc": 0,
+        "Items": {
+            "Weapons": ["Shiv"]
         }
     }
 })
 
-
+class Stat():
+    def __init__(self, m, v):
+        self.m = m
+        self.v = v
 
 class Player:
     def __init__(self, bg):
@@ -89,75 +53,72 @@ class Player:
         self.tile = None
         self.L = bg_dict[self.bg].Level
         self.xp = bg_dict[self.bg].Xp
-        self.stat = Box({
-            "Bod": {'m': 0, 'v': 0},
-            "Agi": {'m': 0, 'v': 0},
-            "Mnd": {'m': 0, 'v': 0},
-            "Vig": {'m': 0, 'v': 0},
-            "Str": {'m': 0, 'v': 0},
-            "Dex": {'m': 0, 'v': 0},
-            "Int": {'m': 0, 'v': 0},
-            "For": {'m': 0, 'v': 0},
-            "Poi": {'m': 0, 'v': 0},
-            "Dod": {'m': 0, 'v': 0},
-            "Wer": {'m': 0, 'v': 0},
-            "Gur": {'m': 0, 'v': 0},
-            "Wit": {'m': 0, 'v': 0},
-            "Cri": {'m': 0, 'v': 0},
-            "Ler": {'m': 0, 'v': 0}
-        })
-        self.luc = 0
-        self.init_stats()
+        self.hp=Stat(0,0)
+        self.Bod = Stat(bg_dict[self.bg].Stats.Bod, bg_dict[self.bg].Stats.Bod)
+        self.Agi = Stat(bg_dict[self.bg].Stats.Agi, bg_dict[self.bg].Stats.Agi)
+        self.Mnd = Stat(bg_dict[self.bg].Stats.Mnd, bg_dict[self.bg].Stats.Mnd)
+        self.Vig = Stat(0,0)
+        self.Str = Stat(bg_dict[self.bg].Stats.Str, bg_dict[self.bg].Stats.Str)
+        self.Dex = Stat(bg_dict[self.bg].Stats.Dex, bg_dict[self.bg].Stats.Dex)
+        self.Int = Stat(bg_dict[self.bg].Stats.Int, bg_dict[self.bg].Stats.Int)
+        self.For = Stat(0,0)
+        self.Poi = Stat(bg_dict[self.bg].Stats.Poi, bg_dict[self.bg].Stats.Poi)
+        self.Dod = Stat(bg_dict[self.bg].Stats.Dod, bg_dict[self.bg].Stats.Dod)
+        self.Wer = Stat(bg_dict[self.bg].Stats.Wer, bg_dict[self.bg].Stats.Wer)
+        self.Gur = Stat(0,0)
+        self.Wit = Stat(0,0)
+        self.Cri = Stat(0,0)
+        self.Ler = Stat(0,0)
+        self.luc = bg_dict[self.bg].Luc
         self.sm_calc()
         self.reset_stats()
         self.update_cs()
         self.Inv=Inventory()
-    
-    
-    
-    
-    def init_stats(self):
-        for stat in self.stat: 
-            self.stat[stat].m = bg_dict[self.bg].Stats[stat]
+        for item in bg_dict[self.bg].Items.Weapons: self.Inv.Bag.d.Weapons[item] = Box({"Name": item, "Quality": 10})
+        self.Inv.update_ui()
+
     def sm_calc(self):
-        self.stat.Str.m = self.stat.Str.m + self.stat.Bod.m * .33
-        self.stat.Dex.m = self.stat.Dex.m + self.stat.Agi.m * .33
-        self.stat.Int.m = self.stat.Int.m + self.stat.Mnd.m * .33
-        self.stat.Poi.m = self.stat.Poi.m + self.stat.Str.m * .33
-        self.stat.Dod.m = self.stat.Dod.m + self.stat.Dex.m * .33
-        self.stat.Wer.m = self.stat.Wer.m + self.stat.Int.m * .33
-        self.stat.Vig.m = self.curve(self.stat.Bod.m) + self.curve(self.stat.Agi.m) + self.curve(self.stat.Mnd.m)
-        self.stat.For.m = self.curve(self.stat.Str.m) + self.curve(self.stat.Dex.m) + self.curve(self.stat.Int.m)
-        self.stat.Gur.m = self.curve(self.stat.Poi.m) + self.curve(self.stat.Dod.m) + self.curve(self.stat.Wer.m)
-        self.stat.Wit.m = self.curve(self.stat.Bod.m) + self.curve(self.stat.Str.m) + self.curve(self.stat.Poi.m)
-        self.stat.Cri.m = self.curve(self.stat.Agi.m) + self.curve(self.stat.Dex.m) + self.curve(self.stat.Dod.m)
-        self.stat.Ler.m = self.curve(self.stat.Mnd.m) + self.curve(self.stat.Int.m) + self.curve(self.stat.Wer.m)
-        for stat in self.stat: self.stat[stat].m = round(self.stat[stat].m)
+        self.Str.m = self.Str.m + self.Bod.m * .33
+        self.Dex.m = self.Dex.m + self.Agi.m * .33
+        self.Int.m = self.Int.m + self.Mnd.m * .33
+        self.Poi.m = self.Poi.m + self.Str.m * .33
+        self.Dod.m = self.Dod.m + self.Dex.m * .33
+        self.Wer.m = self.Wer.m + self.Int.m * .33
+        self.Vig.m = self.curve(self.Bod.m) + self.curve(self.Agi.m) + self.curve(self.Mnd.m)
+        self.For.m = self.curve(self.Str.m) + self.curve(self.Dex.m) + self.curve(self.Int.m)
+        self.Gur.m = self.curve(self.Poi.m) + self.curve(self.Dod.m) + self.curve(self.Wer.m)
+        self.Wit.m = self.curve(self.Bod.m) + self.curve(self.Str.m) + self.curve(self.Poi.m)
+        self.Cri.m = self.curve(self.Agi.m) + self.curve(self.Dex.m) + self.curve(self.Dod.m)
+        self.Ler.m = self.curve(self.Mnd.m) + self.curve(self.Int.m) + self.curve(self.Wer.m)
+        for stat in stl: getattr(self, stat).m = round(getattr(self, stat).m,2)
+        self.hp.m = round(self.Vig.m*2.1,2)
     def sv_calc(self):
-        self.stat.Str.v = self.stat.Bod.v * 0.33
-        self.stat.Dex.v = self.stat.Agi.v * 0.33
-        self.stat.Int.v = self.stat.Mnd.v * 0.33
-        self.stat.Poi.v = self.stat.Str.v * 0.33
-        self.stat.Dod.v = self.stat.Dex.v * 0.33
-        self.stat.Wer.v = self.stat.Int.v * 0.33
-        self.stat.Vig.v = self.curve(self.stat.Bod.v) + self.curve(self.stat.Agi.v) + self.curve(self.stat.Mnd.v)
-        self.stat.For.v = self.curve(self.stat.Str.v) + self.curve(self.stat.Dex.v) + self.curve(self.stat.Int.v)
-        self.stat.Gur.v = self.curve(self.stat.Poi.v) + self.curve(self.stat.Dod.v) + self.curve(self.stat.Wer.v)
-        self.stat.Wit.v = self.curve(self.stat.Bod.v) + self.curve(self.stat.Str.v) + self.curve(self.stat.Poi.v)
-        self.stat.Cri.v = self.curve(self.stat.Agi.v) + self.curve(self.stat.Dex.v) + self.curve(self.stat.Dod.v)
-        self.stat.Ler.v = self.curve(self.stat.Mnd.v) + self.curve(self.stat.Int.v) + self.curve(self.stat.Wer.v)
-        for stat in self.stat:
-            self.stat[stat].v = round(self.stat[stat].m)
+        self.Str.v = self.Bod.v * 0.33
+        self.Dex.v = self.Agi.v * 0.33
+        self.Int.v = self.Mnd.v * 0.33
+        self.Poi.v = self.Str.v * 0.33
+        self.Dod.v = self.Dex.v * 0.33
+        self.Wer.v = self.Int.v * 0.33
+        self.Vig.v = self.curve(self.Bod.v + self.Agi.v + self.Mnd.v)
+        self.For.v = self.curve(self.Str.v + self.Dex.v + self.Int.v)
+        self.Gur.v = self.curve(self.Poi.v + self.Dod.v + self.Wer.v)
+        self.Wit.v = self.curve(self.Bod.v + self.Str.v + self.Poi.v)
+        self.Cri.v = self.curve(self.Agi.v + self.Dex.v + self.Dod.v)
+        self.Ler.v = self.curve(self.Mnd.v + self.Int.v + self.Wer.v)
+        for stat in stl: getattr(self, stat).v = round(getattr(self, stat).v,2)
+        self.hp.v = round(self.hp.v-((self.Vig.m-self.Vig.v)*2.1),2)
     def reset_stats(self):
-        for stat in self.stat: self.stat[stat].v = self.stat[stat].m
+        for stat in stl: getattr(self, stat).v = getattr(self, stat).m
+        self.hp.v = self.hp.m
     def curve(self,stat): return 0.011*(stat**2)
     def update_cs(self):
         configure_item(f"L_cs", label=self.L)
         configure_item(f"xp_cs", label=self.xp)
         configure_item(f"Luc_cs", label=self.luc)
-        stats = ["Bod", "Agi", "Mnd", "Str", "Dex", "Int", "Poi", "Dod", "Wer"]
-        for stat in stats: 
-            configure_item(f"{stat}_cs", label=self.stat[stat].v)
+        configure_item(f"hp_cs", label=f'{round(self.hp.v,1)}/{round(self.hp.m,1)}')
+        for stat in ["Bod", "Agi", "Mnd", "Str", "Dex", "Int", "Poi", "Dod", "Wer"]: 
+            configure_item(f"{stat}_cs", label=getattr(self, stat).v)
+            
 
 
 

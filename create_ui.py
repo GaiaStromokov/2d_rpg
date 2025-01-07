@@ -23,6 +23,10 @@ def create_chs():
     with window(no_title_bar=True, pos=(0, 0), no_close=True, show=True,tag="CS_window"):
         with group (horizontal=True):
             with child_window(border=True, auto_resize_y=True,auto_resize_x=True, tag="stats"):
+                with child_window(height=35, width=118, border=True):
+                    with group (horizontal=True):
+                        add_button(label='HP', enabled=False,width=25)
+                        add_button(label='', enabled=False,width=70, tag="hp_cs")
                 with group (horizontal=True):
                     with child_window(height=58, width=55, border=True):
                         add_button(label='LvL', enabled=False,width=40)
